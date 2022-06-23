@@ -7,9 +7,6 @@ namespace Riff
 {
     public class RiffInputStream : WrappedStream
     {
-        public const bool IsLittleEndian = true;
-        public static DataProcessor CreateRiffDataProcessor(Stream stream) => new DataProcessor(stream) { IsLittleEndian = IsLittleEndian };
-
         public int FormType { get; }
         public string FormTypeToString => this.FormType.TypeKeyToString();
         public RiffChunkPath CurrentPath => this.ChunkPath.Count == 0 ? null : this.ChunkPath[this.ChunkPath.Count - 1];
@@ -25,7 +22,7 @@ namespace Riff
         public RiffInputStream(Stream baseStream, bool leaveOpen) : base(baseStream, leaveOpen)
         {
             var chunkStream = new RiffChunkStream(baseStream);
-            var processor = CreateRiffDataProcessor(chunkStream);
+            var processor = RiffChunk.CreateRiffDataProcessor(chunkStream);
             var formType = processor.ReadInt();
             this.FormType = formType;
             this.ChunkPath.Add(new RiffChunkPath(null, chunkStream.Header, chunkStream, formType));
@@ -64,7 +61,7 @@ namespace Riff
                 }
                 else if (typeKey == KnownRiffTypeKeys.List)
                 {
-                    var processor = CreateRiffDataProcessor(stream);
+                    var processor = RiffChunk.CreateRiffDataProcessor(stream);
                     var formType = processor.ReadInt();
                     this.ChunkPath.Add(new RiffChunkPath(currentPath, stream.Header, stream, formType));
                 }
