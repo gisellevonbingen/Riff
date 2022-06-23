@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+
+namespace Riff
+{
+    public static class TypeKeyExtensions
+    {
+        public static string TypeKeyToString(this int typeKey)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var processor = RiffInputStream.CreateRiffDataProcessor(ms);
+                processor.WriteInt(typeKey);
+                var bytes = ms.ToArray();
+                return Encoding.ASCII.GetString(bytes);
+            }
+
+        }
+
+    }
+
+}
