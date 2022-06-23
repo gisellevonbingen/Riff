@@ -71,7 +71,7 @@ using (var input = new FileStream(inputFile, FileMode.Open))
 }
 ```
 
-## Read structurized object to File
+## Write structurized object to File
 
 ### Code Example
 ```CS
