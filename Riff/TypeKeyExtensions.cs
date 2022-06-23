@@ -11,7 +11,7 @@ namespace Riff
         {
             using (var ms = new MemoryStream())
             {
-                var processor = RiffInputStream.CreateRiffDataProcessor(ms);
+                var processor = RiffChunk.CreateRiffDataProcessor(ms);
                 processor.WriteInt(typeKey);
                 var bytes = ms.ToArray();
                 return Encoding.ASCII.GetString(bytes);
